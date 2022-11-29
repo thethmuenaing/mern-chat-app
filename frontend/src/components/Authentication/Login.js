@@ -32,6 +32,7 @@ const Login = () => {
 				<FormLabel>Password</FormLabel>
 				<InputGroup>
 					<Input
+						autoComplete="new-password"
 						type={show ? "text" : "password"}
 						placeholder="Enter Your Password"
 						onChange={(e) => {
