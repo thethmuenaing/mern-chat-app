@@ -1,6 +1,8 @@
 import React from "react";
 import { Box, Container, Text } from "@chakra-ui/react";
 import { Tabs, TabList, TabPanels, Tab, TabPanel } from "@chakra-ui/react";
+import Login from "../components/Authentication/Login";
+import Signup from "../components/Authentication/Signup";
 
 const Homepage = () => {
 	return (
@@ -26,8 +28,12 @@ const Homepage = () => {
 						<Tab width="50%">Sign Up</Tab>
 					</TabList>
 					<TabPanels>
-						<TabPanel>{/* <Login /> */}</TabPanel>
-						<TabPanel>{/* <Signup /> */}</TabPanel>
+						<TabPanel>
+							<Login />
+						</TabPanel>
+						<TabPanel>
+							<Signup />
+						</TabPanel>
 					</TabPanels>
 				</Tabs>
 			</Box>
