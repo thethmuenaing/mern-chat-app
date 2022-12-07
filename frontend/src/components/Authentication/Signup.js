@@ -167,7 +167,7 @@ const Signup = () => {
 					</InputRightElement>
 				</InputGroup>
 			</FormControl>
-			<FormControl id="password" isRequired>
+			<FormControl id="confirm-password" isRequired>
 				<FormLabel>Comfirm Password</FormLabel>
 				<InputGroup>
 					<Input
