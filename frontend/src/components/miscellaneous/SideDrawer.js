@@ -25,6 +25,7 @@ import ProfileModal from "./ProfileModal";
 import { useHistory } from "react-router-dom";
 import axios from "axios";
 import ChatLoading from "../ChatLoading";
+import UserListItem from "../UserAvatar/UserListItem";
 
 const SideDrawer = () => {
 	const [search, setSearch] = useState();
@@ -42,6 +43,7 @@ const SideDrawer = () => {
 	};
 
 	const toast = useToast();
+
 	const handleSearch = async () => {
 		if (!search) {
 			toast({
@@ -57,10 +59,11 @@ const SideDrawer = () => {
 		try {
 			setLoading(true);
 			const config = {
-				Headers: {
+				headers: {
 					Authorization: `Bearer ${user.token}`,
 				},
 			};
+
 			const { data } = await axios.get(`/api/user?search=${search}`, config);
 
 			setLoading(false);
@@ -76,6 +79,8 @@ const SideDrawer = () => {
 			});
 		}
 	};
+
+	const accessChat = (userId) => {};
 
 	return (
 		<>
@@ -141,7 +146,17 @@ const SideDrawer = () => {
 							/>
 							<Button onClick={handleSearch}>Go</Button>
 						</Box>
-						{loading ? <ChatLoading /> : <span>results</span>}
+						{loading ? (
+							<ChatLoading />
+						) : (
+							searchResult?.map((user) => (
+								<UserListItem
+									key={user._id}
+									user={user}
+									handleFunction={() => accessChat(user._id)}
+								/>
+							))
+						)}
 					</DrawerBody>
 				</DrawerContent>
 			</Drawer>
