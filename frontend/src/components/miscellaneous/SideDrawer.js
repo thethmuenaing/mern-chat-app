@@ -4,6 +4,7 @@ import {
 	Button,
 	Menu,
 	MenuButton,
+	MenuDivider,
 	MenuItem,
 	MenuList,
 	Text,
@@ -12,6 +13,7 @@ import {
 import { BellIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import React, { useState } from "react";
 import { ChatState } from "../../Context/ChatRouter";
+import ProfileModal from "./ProfileModal";
 
 const SideDrawer = () => {
 	const [search, setSearch] = useState();
@@ -42,26 +44,32 @@ const SideDrawer = () => {
 				<Text fontSize="2xl" fontFamily="Work sans">
 					Talk-A-Tive
 				</Text>
-				<Menu>
-					<MenuButton p={1}>
-						<BellIcon fontSize="2xl" m={1} />
-					</MenuButton>
-					{/* <MenuList></MenuList> */}
-				</Menu>
-				<Menu>
-					<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-						<Avatar
-							size="sm"
-							cursor="pointer"
-							name={user.name}
-							src={user.pic}
-						/>
-					</MenuButton>
-					<MenuList>
-						<MenuItem>My Profile</MenuItem>
-						<MenuItem>Logout</MenuItem>
-					</MenuList>
-				</Menu>
+				<div>
+					<Menu>
+						<MenuButton p={1}>
+							<BellIcon fontSize="2xl" m={1} />
+						</MenuButton>
+						{/* <MenuList></MenuList> */}
+					</Menu>
+					<Menu>
+						<MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+							<Avatar
+								size="sm"
+								cursor="pointer"
+								name={user.name}
+								src={user.pic}
+							/>
+						</MenuButton>
+						<MenuList>
+							<ProfileModal user={user}>
+								<MenuItem>My Profile</MenuItem>
+							</ProfileModal>
+
+							<MenuDivider />
+							<MenuItem>Logout</MenuItem>
+						</MenuList>
+					</Menu>
+				</div>
 			</Box>
 		</>
 	);
