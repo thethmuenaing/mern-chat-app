@@ -1,4 +1,10 @@
-import { FormControl, Input, useDisclosure, useToast } from "@chakra-ui/react";
+import {
+	Box,
+	FormControl,
+	Input,
+	useDisclosure,
+	useToast,
+} from "@chakra-ui/react";
 import React, { useState } from "react";
 import {
 	Modal,
@@ -13,11 +19,12 @@ import {
 import { ChatState } from "../../Context/ChatProvider";
 import axios from "axios";
 import UserListItem from "../UserAvatar/UserListItem";
+import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 
 const GroupChatModal = ({ children }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
 	const [groupChatName, setGroupChatName] = useState();
-	const [selectedUser, setSelectedUser] = useState([]);
+	const [selectedUsers, setSelectedUsers] = useState([]);
 	const [search, setSearch] = useState("");
 	const [searchResult, setSearchResult] = useState([]);
 	const [loading, setLoading] = useState(false);
@@ -52,7 +59,22 @@ const GroupChatModal = ({ children }) => {
 		}
 	};
 	const handleSubmit = () => {};
-	const handleGroup = () => {};
+	const handleGroup = (userToAdd) => {
+		if (selectedUsers.includes(userToAdd)) {
+			toast({
+				title: "User already added",
+				status: "warning",
+				duration: 5000,
+				isClosable: true,
+				position: "top",
+			});
+			return;
+		}
+
+		setSelectedUsers([...selectedUsers, userToAdd]);
+	};
+
+	const handleDelete = () => {};
 	return (
 		<>
 			<span onClick={onOpen}>{children}</span>
@@ -85,6 +107,16 @@ const GroupChatModal = ({ children }) => {
 							/>
 						</FormControl>
 						{/* Selected Users */}
+						<Box w="100%" display="flex" flexWrap="Wrap">
+							{selectedUsers.map((u) => (
+								<UserBadgeItem
+									key={u._id}
+									user={u}
+									handleFunction={() => handleDelete(u)}
+								/>
+							))}
+						</Box>
+						{/*  */}
 						{/* Render Searched Users */}
 						{loading ? (
 							<div>Loading</div>
