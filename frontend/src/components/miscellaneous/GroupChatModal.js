@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { ChatState } from "../../Context/ChatProvider";
 import axios from "axios";
+import UserListItem from "../UserAvatar/UserListItem";
 
 const GroupChatModal = ({ children }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
@@ -37,7 +38,6 @@ const GroupChatModal = ({ children }) => {
 			};
 
 			const { data } = await axios.get(`/api/user?search=${search}`, config);
-			console.log("data-2 ", data);
 			setLoading(false);
 			setSearchResult(data);
 		} catch (error) {
@@ -52,6 +52,7 @@ const GroupChatModal = ({ children }) => {
 		}
 	};
 	const handleSubmit = () => {};
+	const handleGroup = () => {};
 	return (
 		<>
 			<span onClick={onOpen}>{children}</span>
@@ -85,6 +86,20 @@ const GroupChatModal = ({ children }) => {
 						</FormControl>
 						{/* Selected Users */}
 						{/* Render Searched Users */}
+						{loading ? (
+							<div>Loading</div>
+						) : (
+							searchResult
+								?.slice(0, 4)
+								.map((user) => (
+									<UserListItem
+										key={user._id}
+										user={user}
+										handleFunction={() => handleGroup(user)}
+									/>
+								))
+						)}
+						{/*  */}
 					</ModalBody>
 
 					<ModalFooter>
