@@ -14,18 +14,22 @@ import { getSender, getSenderFull } from "../config/ChatLogics";
 import { ChatState } from "../Context/ChatProvider";
 import ProfileModal from "./miscellaneous/ProfileModal";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
+import ScrollableChat from "./ScrollableChat";
+import "./styles.css";
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 	const [messages, setMessages] = useState([]);
 	const [loading, setLoading] = useState(false);
-	const [newMessage, setNewMessage] = useState();
+	const [newMessage, setNewMessage] = useState("");
+	const toast = useToast();
 	const { user, selectedChat, setSelectedChat } = ChatState();
 
-	const toast = useToast();
+	useEffect(() => {
+		fetchMessages();
+	}, [selectedChat]);
 
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
-
 		try {
 			const config = {
 				headers: {
@@ -37,7 +41,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 				`/api/message/${selectedChat._id}`,
 				config
 			);
-			console.log("messages ", messages);
 			setMessages(data);
 			setLoading(false);
 		} catch (error) {
@@ -51,10 +54,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 			});
 		}
 	};
-
-	useEffect(() => {
-		fetchMessages();
-	}, [selectedChat]);
 
 	const sendMessage = async (event) => {
 		if (event.key === "Enter" && newMessage) {
@@ -75,8 +74,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 					config
 				);
 
-				console.log("data ", data);
 				setMessages([...messages, data]);
+				console.log("data ", data);
 			} catch (error) {
 				toast({
 					title: "Error Occured!",
@@ -125,6 +124,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 								<UpdateGroupChatModal
 									fetchAgain={fetchAgain}
 									setFetchAgain={setFetchAgain}
+									fetchMessages={fetchMessages}
 								/>
 							</>
 						)}
@@ -150,7 +150,10 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 								margin="auto"
 							/>
 						) : (
-							<div>{/* Messages Here */}</div>
+							<div className="messages">
+								{/* Messages Here */}
+								<ScrollableChat messages={messages} />
+							</div>
 						)}
 
 						<FormControl onKeyDown={sendMessage} isRequired mt={3}>
