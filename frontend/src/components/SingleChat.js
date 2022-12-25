@@ -42,7 +42,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 	};
 
 	const toast = useToast();
-	const { user, selectedChat, setSelectedChat } = ChatState();
+	const { user, selectedChat, setSelectedChat, notification, setNotification } =
+		ChatState();
 
 	const fetchMessages = async () => {
 		if (!selectedChat) return;
@@ -77,8 +78,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 		socket.emit("setup", user);
 		socket.on("connected", () => setSocketConnected(true));
 		socket.on("typing", () => setIsTyping(true));
-		socket.on("stop typing", () => setTyping(false));
-	}, []);
+		socket.on("stop typing", () => setIsTyping(false));
+	}, [socket]);
 
 	useEffect(() => {
 		fetchMessages();
@@ -93,6 +94,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 				selectedChatCompare._id !== newMessageRecieved.chat._id
 			) {
 				//give notification
+
+				if (!notification.includes(newMessageRecieved)) {
+					setNotification([newMessageRecieved, ...notification]);
+					setFetchAgain(!fetchAgain);
+				}
 			} else {
 				setMessages([...messages, newMessageRecieved]);
 			}
@@ -118,7 +124,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 					},
 					config
 				);
-				console.log("data ", data);
 				socket.emit("new message", data);
 				setMessages([...messages, data]);
 			} catch (error) {
@@ -149,7 +154,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 		setTimeout(() => {
 			var timeNow = new Date().getTime();
 			var timeDiff = timeNow - lastTypingTime;
-
 			if (timeDiff >= timerLength && typing) {
 				socket.emit("stop typing", selectedChat._id);
 				setTyping(false);
