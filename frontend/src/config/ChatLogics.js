@@ -23,10 +23,6 @@ export const isLastMessage = (messages, i, userId) => {
 };
 
 export const isSameSenderMargin = (messages, m, i, userId) => {
-	console.log("messages ", messages);
-	console.log("m ", m);
-	console.log("i ", i);
-	console.log("userId ", userId);
 	if (
 		i < messages.length - 1 &&
 		messages[i + 1].sender._id === m.sender._id &&
