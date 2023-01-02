@@ -23,16 +23,14 @@ import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 
 const GroupChatModal = ({ children }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [groupChatName, setGroupChatName] = useState();
+	const [groupChatName, setGroupChatName] = useState("");
 	const [selectedUsers, setSelectedUsers] = useState([]);
-	const [search, setSearch] = useState("");
 	const [searchResult, setSearchResult] = useState([]);
 	const [loading, setLoading] = useState(false);
 
 	const toast = useToast();
 	const { user, chats, setChats } = ChatState();
 	const handleSearch = async (query) => {
-		setSearch(query);
 		if (!query) {
 			return;
 		}

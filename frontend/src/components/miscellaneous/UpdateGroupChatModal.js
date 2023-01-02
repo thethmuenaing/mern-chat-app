@@ -24,8 +24,7 @@ import UserListItem from "../UserAvatar/UserListItem";
 
 const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 	const { isOpen, onOpen, onClose } = useDisclosure();
-	const [groupChatName, setGroupChatName] = useState();
-	const [search, setSearch] = useState("");
+	const [groupChatName, setGroupChatName] = useState("");
 	const [searchResult, setSearchResult] = useState([]);
 	const [loading, setLoading] = useState(false);
 	const [renameLoading, setRenameLoading] = useState(false);
@@ -174,7 +173,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 	};
 
 	const handleSearch = async (query) => {
-		setSearch(query);
 		if (!query) {
 			return;
 		}
@@ -186,8 +184,7 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
 					Authorization: `Bearer ${user.token}`,
 				},
 			};
-			const { data } = await axios.get(`/api/user?search=${search}`, config);
-			console.log("data ", data);
+			const { data } = await axios.get(`/api/user?search=${query}`, config);
 			setLoading(false);
 			setSearchResult(data);
 		} catch (error) {
