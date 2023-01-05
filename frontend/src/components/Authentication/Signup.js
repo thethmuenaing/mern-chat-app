@@ -50,8 +50,6 @@ const Signup = () => {
 				.then((res) => res.json())
 				.then((data) => {
 					setPic(data.url.toString());
-					console.log("data ", data);
-					console.log(data.url.toString());
 					setLoading(false);
 				})
 				.catch((err) => {
@@ -115,7 +113,7 @@ const Signup = () => {
 
 			localStorage.setItem("userInfo", JSON.stringify(data));
 			setLoading(false);
-			history.push();
+			history.push("/chats");
 		} catch (error) {
 			toast({
 				title: "Error Occured!",
